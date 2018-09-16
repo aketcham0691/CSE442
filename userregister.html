@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Bootstrap 4 Example</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	</head>
+	<body style="background-color:#F7F7F7">
+		<nav class="navbar navbar-light" style="background-color:#66ff60">
+		  <a class="navbar-brand" href="#">
+			<img src=hat.png width="30" height="30" class="d-inline-block align-top" alt="">
+			Bottom Hat
+		  </a>
+
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		</nav>
+		<form action="./register.php">
+			<table class="table table-borderless w-25 mx-auto">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="text" class="form-control" placeholder="Full Name" aria-label="Full Name" aria-describedby="basic-addon1">
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon2">
+								<div class="input-group-append">
+									<span class="input-group-text" id="basic-addon2">@buffalo.edu</span>
+								</div>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon3">
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="password" class="form-control" placeholder="Confirm Password" aria-label="Password2" aria-describedby="basic-addon4">
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0">
+								<select class="custom-select" id="courses">
+									<option selected>Choose course...</option>
+									<option value="1">CSE333</option>
+									<option value="2">EE555</option>
+									<option value="3">MTH101</option>
+								</select>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</th>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</body>
+</html>
