@@ -119,15 +119,28 @@
          }
       </style>
    </head>
-   <body data-spy="scroll" data-target=".navbar">
-      <nav class="navbar navbar-light" style="background-color:#66ff60">
-         <a class="navbar-brand" href="#">
-         <img src=hat.png width="30" height="30" class="d-inline-block align-top" alt="">
-         </a>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-         </button>
-      </nav>
+   <body>
+<nav class="navbar navbar-light" style="background-color:#66ff60">
+  <a class="navbar-brand" href="#">
+    <img src=hat.png width="30" height="30" class="d-inline-block align-top" alt="">
+    Bottom Hat
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+        <a class="nav-link" href="#">About <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">My Course</a>
+        <a class="nav-link" href="#">Take Attendace</a>
+      </li>
+    </ul>
+    </div>
+</nav>
       <div id="landing" class="container-fluid">
          <div class="row" style="height:10%">
          </div>
@@ -171,7 +184,7 @@
          <span onclick="document.getElementById('sign_in_modal').style.display='none'" 
             class="close" title="Close Modal">&times;</span>
          <!-- Modal Content -->
-         <form class="modal-content animate" action="/action_page.php">
+         <form class="modal-content animate" action="/studentPage.html">
             <div class="row">
                <div class="col-sm-12 with-margin" align="center">
                   <div class="img-wrapper" align="center">
@@ -200,25 +213,71 @@
          <span onclick="document.getElementById('create_account_modal').style.display='none'" 
             class="close" title="Close Modal">&times;</span>
          <!-- Modal Content -->
-         <form class="modal-content animate" action="/action_page.php">
-            <div class="row">
-               <div class="col-sm-12 with-margin" align="center">
-                  <div class="img-wrapper" align="center">
-                     <img src="small_hat.png" class="img-circle" class="img-responsive" alt="Cinque Terre" align="middle" style="border: #ffffff 3px solid">
-                  </div>
-               </div>
-            </div>
-            <div class="container">
-               <label for="uname"><b>UBIT Name</b></label>
-               <input type="text" placeholder="Enter Username" name="uname" required>
-               <label for="psw"><b>Password</b></label>
-               <input type="password" placeholder="Enter Password" name="psw" required>
-               <button type="submit">Create Account</button>
-            </div>
-            <div class="container" style="background-color:#f1f1f1">
-               <button type="button" onclick="document.getElementById('create_account_modal').style.display='none'" class="cancelbtn">Cancel</button>
-            </div>
-         </form>
+         <form class="modal-content animate" onsubmit="OpenUserPage()" action="javascript:OpenUserPage()" id="newUser">
+			<table class="table table-borderless w-25 mx-auto">
+				<tbody>
+                    <tr>
+						<th scope="row">
+							<div class="input-group m-0">
+								<select class="custom-select" id="accountTypes">
+									<option selected>Choose account type...</option>
+									<option value="1" name="sel1">Student</option>
+									<option value="2" name="sel1">Professor</option>
+								</select>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="text" class="form-control" placeholder="Full Name" aria-label="Full Name" aria-describedby="basic-addon1">
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon2">
+								<div class="input-group-append">
+									<span class="input-group-text" id="basic-addon2">@buffalo.edu</span>
+								</div>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon3">
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0 p-0">
+								<input type="password" class="form-control" placeholder="Confirm Password" aria-label="Password2" aria-describedby="basic-addon4">
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<div class="input-group m-0">
+								<select class="custom-select" id="courses">
+									<option selected>Choose course...</option>
+									<option value="1">CSE333</option>
+									<option value="2">EE555</option>
+									<option value="3">MTH101</option>
+								</select>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th scope="row">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</th>
+					</tr>
+				</tbody>
+			</table>
+		</form>
       </div>
       <script>
          // Get the modal
@@ -242,5 +301,18 @@
              }
          }
       </script>
+       <script type="text/javascript" language="javascript">
+        function OpenUserPage() {
+            var choice = document.getElementById("accountTypes");
+            choice = (choice.options[choice.selectedIndex].value)
+
+    if (choice == '1') {
+        window.location.assign("./studentPage.html");
+    }
+    else if (choice == '2') {
+        window.location.assign("./professorPage.html");
+    }
+        }
+</script>
    </body>
 </html>
