@@ -284,25 +284,29 @@ $(function(){
                var password = document.getElementById("password").value;
              console.log("Email: " + email);
              console.log("Password: " + password);
-       firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+       firebase.auth().createUserWithEmailAndPassword(email, password)
+           .then(function() {
+             var choice = document.getElementById("accountTypes");
+             choice = (choice.options[choice.selectedIndex].value)
+         
+                if (choice == '1') {
+                window.location.assign("./studentPage.html");
+                }
+                else if (choice == '2') {
+                window.location.assign("./ProfessorPage.html");
+                }
+           
+            })
+           .catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
-             if (errorCode == 'auth/weak-password') {
-    alert('The password is too weak.');
-  }
-  var errorMessage = error.message;
+             var errorMessage = error.message;
+    alert(errorMessage);
+  
+
            console.error(errorMessage);
   // ...
 });
-             /*var choice = document.getElementById("accountTypes");
-             choice = (choice.options[choice.selectedIndex].value)
-         
-         if (choice == '1') {
-         window.location.assign("./studentPage.html");
-         }
-         else if (choice == '2') {
-         window.location.assign("./ProfessorPage.html");
-         }*/
          }
       </script>
    </body>
