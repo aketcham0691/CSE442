@@ -287,6 +287,9 @@ $(function(){
        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
+             if (errorCode == 'auth/weak-password') {
+    alert('The password is too weak.');
+  }
   var errorMessage = error.message;
            console.error(errorMessage);
   // ...
@@ -302,21 +305,5 @@ $(function(){
          }
          }
       </script>
-       <script>
-           function createNewUser() {
-               console.log("in create new user");
-               var email = document.getElementById("email").value + "@buffalo.edu";
-               var password = document.getElementById("password").value;
-       firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-  // Handle Errors here.
-           
-  var errorCode = error.code;
-  if (errorCode == 'auth/weak-password') {
-    alert('The password is too weak.');
-  var errorMessage = error.message;
-           console.error(errorMessage);
-  // ...
-});}
-       </script>
    </body>
 </html>
