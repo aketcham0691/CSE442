@@ -4,25 +4,39 @@
      <title>student_class</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<nav class="navbar navbar-light">
-		  <a class="navbar-brand" href="#">
-			<img src=hat.png width="30" height="30" class="d-inline-block align-top" alt="">
-			Bottom Hat
-		  </a>
+  <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+  <script src="./src/common.js"></script>
+  <script src="./src/studentPage.js"></script>
+    <script>
+      window.onload = function() {
+        initStudentPage();
+    }
+  </script>
   </head>
-     <tr class="head"><span style ="font-family: arial; font-size: 18pt; color:red;" >Class Code</span></th>
-	  <td class="tg-idwi"></td>
-   </tr>
-   <br>
-     <tr class="head"><span style ="font-family: arial; font-size: 18pt; color:Blue;" >Professor Name </span></th>
-    <td class="tg-idwi"></td>
-	    <td class="imgcontainer">
-    <img src=".png" alt="Avatar" class="avatar">
+
   <body>
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">
+                <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Page 1</a></li>
+          <li><a href="#">Page 2</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a id ="userAvatar" href="#"><span class="glyphicon glyphicon-user"></span> User </a></li>
+          <li><a href="#" onclick="signOut()" ><span id="logout" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+      </div>
+  </nav>
 <table class="table">
   <thead>
 
