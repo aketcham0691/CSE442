@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>QR Attendance</title>
-       
-<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBJjiM_ouXSCvHJNglp0cmL5fbTcQidqRE",
-    authDomain: "qrattendance-28a3a.firebaseapp.com",
-    databaseURL: "https://qrattendance-28a3a.firebaseio.com",
-    projectId: "qrattendance-28a3a",
-    storageBucket: "qrattendance-28a3a.appspot.com",
-    messagingSenderId: "478980586825"
-  };
-  firebase.initializeApp(config);
-</script>
+      <title>Bottom Hat</title>
+      <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+      <script src="./src/common.js"></script>
+      <script src="./src/home.js"></script>
+       <script type="text/javascript">
+    window.onload = function() {
+      initApp();
+    };
+  </script>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
       <style>
          body {font-family: Arial, Helvetica, sans-serif;}
          input[type=text], input[type=password] {
@@ -120,15 +114,25 @@
       </style>
    </head>
    <body>
-       <div id="nav-placeholder">
-
-</div>
-    <script>
-$(function(){
-  $("#nav-placeholder").load("navbarCode.html");
-});
-</script>
-       
+<!-- Image and text -->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">
+                <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Page 1</a></li>
+          <li><a href="#">Page 2</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> User </a></li>
+          <li><a href="#" onclick="signOut()" ><span id="logout" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+      </div>
+  </nav>
       <div id="landing" class="container-fluid">
          <div class="row" style="height:10%">
          </div>
@@ -172,7 +176,7 @@ $(function(){
          <span onclick="document.getElementById('sign_in_modal').style.display='none'" 
             class="close" title="Close Modal">&times;</span>
          <!-- Modal Content -->
-         <form class="modal-content animate" action="./studentPage.html">
+         <form class="modal-content animate" action="javascript:toggleSignIn()">
             <div class="row">
                <div class="col-sm-12 with-margin" align="center">
                   <div class="img-wrapper" align="center">
@@ -182,9 +186,9 @@ $(function(){
             </div>
             <div class="container">
                <label for="uname"><b>Username</b></label>
-               <input type="text" placeholder="Enter Username" name="uname" required>
+               <input id="loginname" type="text" placeholder="Enter Username" name="uname" required>
                <label for="psw"><b>Password</b></label>
-               <input type="password" placeholder="Enter Password" name="psw" required>
+               <input id="loginpass" type="password" placeholder="Enter Password" name="psw" required>
                <button style="width: 100%"type="submit">Login</button>
                <label>
                <input type="checkbox" checked="checked" name="remember"> Remember me
@@ -201,7 +205,7 @@ $(function(){
          <span onclick="document.getElementById('create_account_modal').style.display='none'" 
             class="close" title="Close Modal">&times;</span>
          <!-- Modal Content -->
-         <form class="modal-content animate" action="javascript:OpenUserPage()" id="newUser">
+         <form class="modal-content animate" action="javascript:handleSignUp()" id="newUser">
             <table class="table table-borderless w-25 mx-auto">
                <tbody>
                   <tr>
@@ -218,7 +222,7 @@ $(function(){
                   <tr>
                      <th scope="row">
                         <div class="input-group m-0 p-0">
-                           <input type="text" class="form-control" placeholder="Full Name" aria-label="Full Name" aria-describedby="basic-addon1" required>
+                           <input type="text" class="form-control" placeholder="Full Name" aria-label="Full Name" aria-describedby="basic-addon1" id="name" required>
                         </div>
                      </th>
                   </tr>
@@ -275,38 +279,6 @@ $(function(){
              if (event.target == modal) {
                  modal.style.display = "none";
              }
-         }
-      </script>
-      <script type="text/javascript" language="javascript">
-         function OpenUserPage() {
-             console.log("in create new user");
-               var email = document.getElementById("email").value + "@buffalo.edu";
-               var password = document.getElementById("password").value;
-             console.log("Email: " + email);
-             console.log("Password: " + password);
-       firebase.auth().createUserWithEmailAndPassword(email, password)
-           .then(function() {
-             var choice = document.getElementById("accountTypes");
-             choice = (choice.options[choice.selectedIndex].value)
-         
-                if (choice == '1') {
-                window.location.assign("./studentPage.html");
-                }
-                else if (choice == '2') {
-                window.location.assign("./ProfessorPage.html");
-                }
-           
-            })
-           .catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-             var errorMessage = error.message;
-    alert(errorMessage);
-  
-
-           console.error(errorMessage);
-  // ...
-});
          }
       </script>
    </body>
