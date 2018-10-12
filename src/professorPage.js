@@ -31,3 +31,30 @@ function initProfessorPage() {
         // [END_EXCLUDE]
     });
 }
+
+/**
+ * Handles the class creation
+ */
+function handleCreateClass() {
+	console.log("called");
+	var courseCode = document.getElementById("course-code").value;
+	var courseName = document.getElementById("course-name").value;
+	var courseSec = document.getElementById("course-section").value;
+	var user = firebase.auth().currentUser;
+	if (user) {
+		firebase.database().ref("courses/" + courseName).set({
+			courseCode: courseCode,
+			courseName: courseName,
+			courseSec: courseSec,
+			professor: user.uid,
+			attendance: [],
+		}).then(() => {
+			alert("course added");
+		}).catch((error) => {
+			alert(error);
+		})
+	}
+	else {
+		alert("Please log in before creating a class");
+	}
+}
