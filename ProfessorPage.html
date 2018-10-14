@@ -1,204 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Professor Hertz</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
-  <script src="./src/common.js"></script>
-  <script src="./src/professorPage.js"></script>
-  <script>
-      window.onload = function() {
-        initProfessorPage();
-    }
-  </script>
-
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-/* Modal Content */
-.modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
-}
-/* Add Animation */
-@-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
-}
-@keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
-}
-/* The Close Button */
-.close {
-    color: white;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-.modal-header {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}
-.modal-body {padding: 2px 16px;}
-.modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}
-</style>
+<head>					
+	<title>Professor Hertz</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+	<script src="./src/common.js"></script>
+	<script src="./src/professorPage.js"></script>
+	<script>
+		window.onload = function() {
+			initProfessorPage();
+		}
+	</script>
 </head>
-
+	
 <body>
+	<!-- navbar -->
+	<nav class="navbar navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">
+			<img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
+		</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="#">Home</a></li>
+			<li><a href="#">Page 1</a></li>
+			<li><a href="#">Page 2</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a id ="userAvatar" href="#"><span class="glyphicon glyphicon-user"></span> User </a></li>
+			<li><a href="#" onclick="signOut()" ><span id="logout" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		</ul>
+	</div>
+	</nav>
 
-<!-- Image and text -->
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">
-                <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
-            </a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">Page 1</a></li>
-          <li><a href="#">Page 2</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a id ="userAvatar" href="#"><span class="glyphicon glyphicon-user"></span> User </a></li>
-          <li><a href="#" onclick="signOut()" ><span id="logout" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-        </ul>
-      </div>
-  </nav>
+	<div class="container">
+		<div class="jumbotron"> 
+			<h1>BOTTOM HAT</h1>
+			<p><i>Making a more productive learning environment by the day</i></p>
+		</div>
+		<h1>Welcome Professor Hertz!</h1>
+		<h2>Classes</h2>
+		<p>Please select a class to start taking attendance, or create a new class below.</p>
+		<table class="table table-condensed">
+			<thead>
+			<tr>
+				<th>Course Code</th>
+				<th>Course Name</th>
+				<th>Click to Take Attendance</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td><a href="./coursestatsprof.html">CSE 331</a></td>
+				<td>Design and Analysis of Algorithms</td>
+				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance1">Take Attendance</button></td>
+			</tr>
+			<tr>
+				<td><a href="./coursestatsprof.html">CSE 460</a></td>
+				<td>Data Models and Query Languages</td>
+				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance2">Take Attendance</button></td>
+			</tr>
+			<tr>
+				<td><a href="./coursestatsprof.html">MTH 309</a></td>
+				<td>Linear Algebra</td>
+				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance3">Take Attendance</button></td>
+			</tr>
+			</tbody>
+		</table>
+		<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#createClassModal">Create Class</button>
+	</div>
 
-<div class="container">
-  <div class="jumbotron"> 
-  <h1>BOTTOM HAT</h1>
-  <p><i>Making a more productive learning environment by the day</i></p>
-  </div>
-  <h1> Welcome Professor Hertz!</h1>
-  <h2>Classes</h2>
-  <p>Please choose the class to generate QR Code to take attendance.</p>            
-  <table class="table table-condensed">
-    <thead>
-      <tr>
-        <th>Course Code</th>
-        <th>Course Name</th>
-        <th>Click to Take Attendance</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a href="./coursestatsprof.html">CSE 331</a></td>
-        <td>Design and Analysis of Algorithms</td>
-        <td id="take_attendance1">Take Attendance</td>
-      </tr>
-      <tr>
-        <td><a href="./coursestatsprof.html">CSE 460</a></td>
-        <td>Data Models and Query Languages</td>
-        <td id="take_attendance2">Take Attendance</td>
-      </tr>
-      <tr>
-        <td><a href="./coursestatsprof.html">MTH309</a></td>
-        <td>Linear Algebra</td>
-        <td id="take_attendance3">Take Attendance</td>
-      </tr>
-    </tbody>
-  </table>        
-</div>
-<!-- The Modal -->
-<div id="myModal" class="modal">
+	<script>
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-    </div>
-    <div class="modal-body">
-      <img class="QRCODE" src="https://api.qrserver.com/v1/create-qr-code/?data=DataModelsandQueryLanguagesCSE460" class="center">
-    </div>
-    <div class="modal-footer">
-    </div>
-  </div>
+	// Get the button that opens the modal
+	var link1=document.getElementById("take_attendance1");
+	var link2=document.getElementById("take_attendance2");
+	var link3=document.getElementById("take_attendance3");
 
-</div>
+	//Gets the <img> attribute through which we can change the QR code contents
+	var qrcodedata=document.getElementsByClassName("QRCODE");
 
-<script>
-// Get the modal
-var modal = document.getElementById('myModal');
+	// When the user clicks the button, open the modal 
+	link1.onclick = function() {
+		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=DesignandAnalysisofAlgorithmsCSE331"
+	}
 
-// Get the button that opens the modal
-var link1 = document.getElementById("take_attendance1");
-var link2=document.getElementById("take_attendance2");
-var link3=document.getElementById("take_attendance3");
+	link2.onclick = function() {
+		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=DataModelsandQueryLanguagesCSE460"
+	}
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-//Gets the <img> attribute through which we can change the QR code contents
-var qrcodedata=document.getElementsByClassName("QRCODE")[0];
+	link3.onclick = function() {
+		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=LinearAlgebraMth309"
+	}
+	</script>
+	
+	<!-- Take Attendance Modal -->
+	<div class="modal fade" id="takeAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="takeAttendanceModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Take Attendance</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<img class="QRCODE" src="https://api.qrserver.com/v1/create-qr-code/?data=somerandomqrcode" class="center">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-// When the user clicks the button, open the modal 
-link1.onclick = function() {
-    
-    qrcodedata.src="https://api.qrserver.com/v1/create-qr-code/?data=DesignandAnalysisofAlgorithmsCSE331"
-    modal.style.display = "block"
-}
-
-link2.onclick = function() {
-    qrcodedata.src="https://api.qrserver.com/v1/create-qr-code/?data=DataModelsandQueryLanguagesCSE460"
-    modal.style.display = "block";
-}
-
-link3.onclick = function() {
-    qrcodedata.src="https://api.qrserver.com/v1/create-qr-code/?data=LinearAlgebraMth309"
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
+	<!-- Create Class Modal -->
+	<div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Create Class</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form class="modal-content animate" action="javascript:handleCreateClass()" id="newClass">
+						<table class="table table-borderless mx-auto">
+							<tbody>
+								<tr>
+									<th scope="row">
+										<div class="input-group m-0 p-0">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="basic-addon1">Course Code</span>
+											</div>
+											<input type="text" class="form-control" placeholder="CSE 442" aria-label="Course Code" aria-describedby="basic-addon1" id="course-code" required>
+										</div>
+									</th>
+								</tr>
+								<tr>
+									<th scope="row">
+										<div class="input-group m-0 p-0">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="basic-addon2">Course Name</span>
+											</div>
+											<input type="text" class="form-control" placeholder="Name of Course" aria-label="Course Name" aria-describedby="basic-addon2" id="course-name" required>
+										</div>
+									</th>
+								</tr>
+								<tr>
+									<th scope="row">
+										<div class="input-group m-0 p-0">
+											<div class="input-group-prepend">
+												<span class="input-group-text" id="basic-addon3">Course Section</span>
+											</div>
+											<input type="text" class="form-control" placeholder="A, B, X" aria-label="Course Section" aria-describedby="basic-addon3" id="course-section" required>
+										</div>
+									</th>
+								</tr>
+								<tr>
+									<th scope="row">
+										<button id="createClassButton" style="width: 100%" type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+									</th>
+								</tr>
+							 </tbody>
+						</table>
+					 </form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$('#createClassButton').click(function() {
+			$('#createClassModal').modal('hide');
+		});
+	</script>
 </body>
 </html>
