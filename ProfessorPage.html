@@ -59,35 +59,59 @@
 			<tr>
 				<td><a href="./coursestatsprof.html">CSE 331</a></td>
 				<td>Design and Analysis of Algorithms</td>
-				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#attendanceModal">Take Attendance</button></td>
+				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance1">Take Attendance</button></td>
 			</tr>
 			<tr>
 				<td><a href="./coursestatsprof.html">CSE 460</a></td>
 				<td>Data Models and Query Languages</td>
-				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#attendanceModal">Take Attendance</button></td>
+				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance2">Take Attendance</button></td>
 			</tr>
 			<tr>
 				<td><a href="./coursestatsprof.html">MTH 309</a></td>
 				<td>Linear Algebra</td>
-				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#attendanceModal">Take Attendance</button></td>
+				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance3">Take Attendance</button></td>
 			</tr>
 			</tbody>
 		</table>
 		<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#createClassModal">Create Class</button>
 	</div>
 
+	<script>
+
+	// Get the button that opens the modal
+	var link1=document.getElementById("take_attendance1");
+	var link2=document.getElementById("take_attendance2");
+	var link3=document.getElementById("take_attendance3");
+
+	//Gets the <img> attribute through which we can change the QR code contents
+	var qrcodedata=document.getElementsByClassName("QRCODE");
+
+	// When the user clicks the button, open the modal 
+	link1.onclick = function() {
+		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=DesignandAnalysisofAlgorithmsCSE331"
+	}
+
+	link2.onclick = function() {
+		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=DataModelsandQueryLanguagesCSE460"
+	}
+
+	link3.onclick = function() {
+		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=LinearAlgebraMth309"
+	}
+	</script>
+	
 	<!-- Take Attendance Modal -->
-	<div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="attendanceModalLabel" aria-hidden="true">
+	<div class="modal fade" id="takeAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="takeAttendanceModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">CSE 460 Attendance</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Take Attendance</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<img src="https://albertonrecord.co.za/wp-content/uploads/sites/35/2016/04/qr-code.jpg" class="img-fluid">
+					<img class="QRCODE" src="https://api.qrserver.com/v1/create-qr-code/?data=somerandomqrcode" class="center">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
