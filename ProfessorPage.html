@@ -11,6 +11,7 @@
 	<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
 	<script src="./src/common.js"></script>
 	<script src="./src/professorPage.js"></script>
+	<script src="./src/QRcode.js"></script>
 	<script>
 		window.onload = function() {
 			initProfessorPage();
@@ -88,15 +89,18 @@
 
 	// When the user clicks the button, open the modal 
 	link1.onclick = function() {
-		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=DesignandAnalysisofAlgorithmsCSE331"
+		var encoding=GenerateQRCode("CSE331","Aatri Rudra");
+		qrcodedata[0].src=encoding;
 	}
 
 	link2.onclick = function() {
-		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=DataModelsandQueryLanguagesCSE460"
+		var encoding=GenerateQRCode("CSE460","Jan Chomicki");
+		qrcodedata[0].src=encoding;
 	}
 
 	link3.onclick = function() {
-		qrcodedata[0].src="https://api.qrserver.com/v1/create-qr-code/?data=LinearAlgebraMth309"
+		var encoding=GenerateQRCode("MTH309","Dane Taylor");
+		qrcodedata[0].src=encoding;
 	}
 	</script>
 	
