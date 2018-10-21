@@ -4,12 +4,11 @@
   <title>Student Page</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-      <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
   <script src="./src/common.js"></script>
   <script src="./src/studentPage.js"></script>
   <script>
@@ -17,34 +16,66 @@
         initStudentPage();
     }
   </script>
+  
+   <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js">
+  </script>
+
+  <script type="text/javascript" src="./src/qrVerifier.js"></script>
+  <script type="text/javascript" src="./src/QRcode.js"></script>
+
+  <style>
+  .qrcode-text {
+  padding-right: 1.7em;
+  margin-right: 0;
+  vertical-align: middle;
+}
+
+.qrcode-text + .qrcode-text-btn {
+  width: 1.7em;
+  margin-left: -1.7em;
+  vertical-align: middle;
+}
+
+  .qrcode-text-btn {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  background: url(qr_icon.svg) 50% 50% no-repeat;
+  cursor: pointer;
+  }
+
+.qrcode-text-btn > input[type=file] {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  }
+  </style>
+
 </head>
 
 <body>
 <!-- Image and text -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.html">
-          <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
-      </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Page 1</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Page 2</a>
-        </li>
-      </ul>
-      <span class="navbar-text" id="userAvatar">User</span>
-      <a href="#" onclick="signOut()" ><span id="logout" class="fa fa-sign-out" aria-hidden="true"></span></a>
-    </div>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">
+                <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Page 1</a></li>
+          <li><a href="#">Page 2</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a id ="userAvatar" href="#"><span class="glyphicon glyphicon-user"></span> User </a></li>
+          <li><a href="#" onclick="signOut()" ><span id="logout" class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+      </div>
   </nav>
+
 
 <div class="container">
 <div class="jumbotron jumbotron-fluid">
@@ -57,10 +88,10 @@
 
 <button type="button" class="btn btn-success btn-lg btn-block" style="background-color:#66ff60" data-toggle = "modal" data-target= "#exampleModal">My Courses</button>
 
-<button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Take Attendance</button>
-
+<!--<button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Take Attendance</button>
+<img src=hat.png width="60" height="60" class="d-inline-block align-top" alt="">
+-->
 <button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Add courses</button>
-
 <input type="text" name="qrcode-text"
 ><label class=qrcode-text-btn>
   <input type=file
@@ -68,9 +99,9 @@
          capture=environment
          onchange="openQRCamera(this);"
 
-         tabindex=-1> <img src=hat.png width="60" height="60" class="d-inline-block align-top" alt=""> </input>
-
+         tabindex=-1> <img src=att.png width="100" height="100" class="d-inline-block align-top" alt=""> </input>
 </div>
+
 
 
 <!-- ModalCourses -->
@@ -84,9 +115,9 @@
         </button>
       </div>
       <div class="modal-body">
-         <a href="student_class.html"><button type="button" class="btn btn-primary">CSE341</button></a>
+         <a href="student_class.html"><button type="button" class="btn btn-primary">CSE331</button></a>
+         <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE460</button></a>
          <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE442</button></a>
-         <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE331</button></a>
 
       </div>
       <div class="modal-footer">
