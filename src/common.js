@@ -1,12 +1,12 @@
 // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyBJjiM_ouXSCvHJNglp0cmL5fbTcQidqRE",
-        authDomain: "qrattendance-28a3a.firebaseapp.com",
-        databaseURL: "https://qrattendance-28a3a.firebaseio.com",
-        projectId: "qrattendance-28a3a",
-        storageBucket: "qrattendance-28a3a.appspot.com",
-        messagingSenderId: "478980586825"
-    };
+    var config = {
+        apiKey: "AIzaSyC3ckmHaSucNz2xfw7oknrRKXI7YOPa_-A",
+        authDomain: "qrattendance-ff437.firebaseapp.com",
+        databaseURL: "https://qrattendance-ff437.firebaseio.com",
+        projectId: "qrattendance-ff437",
+        storageBucket: "qrattendance-ff437.appspot.com",
+        messagingSenderId: "723831313556"
+      };
     firebase.initializeApp(config);
 
 function getUserFromEmail(email) {
