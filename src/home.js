@@ -13,7 +13,7 @@ function toggleSignIn() {
         // Sign in with email and pass.
         // [START authwithemail]
         firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-        document.getElementById("submit_button").disabled = false;
+        document.getElementById("login_button").disabled = false;
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
