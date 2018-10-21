@@ -7,6 +7,7 @@ function toggleSignIn() {
         firebase.auth().signOut();
         // [END signout]
     } else {
+        document.getElementById("login_button").disabled = true;
         var email = document.getElementById("loginname").value + "@buffalo.edu";
         var password = document.getElementById('loginpass').value;
         // Sign in with email and pass.
@@ -44,11 +45,13 @@ function handleSignUp() {
     var email = document.getElementById('email').value + "@buffalo.edu";
     var password = document.getElementById('password').value;
     var uname = document.getElementById("email").value;
+    document.getElementById("submit_button").disabled = true;
     // Sign in with email and pass.
     // [START createwithemail]
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .catch(function(error) {
         // Handle Errors here.
+        document.getElementById("submit_button").disabled = false;
         var errorCode = error.code;
         var errorMessage = error.message;
         // [START_EXCLUDE]
@@ -131,7 +134,6 @@ function initApp() {
                 account_type : account_type
             })
             .then(function() {
-                alert("user successfully added");
                 if (account_type == "Student") {
                     window.location.replace("./studentPage.html");
                 } else {
