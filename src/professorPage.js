@@ -52,16 +52,23 @@ function handleCreateClass() {
 			const max = 999999;
 			const min = 100000;
 			const pin = Math.floor(Math.random() * (max - min + 1)) + min; // generate a random pin between min and max
-			firebase.database().ref("/courses/" + courseName).set({
+			firebase.database().ref("/courses/" + courseName).set({ // add course to course list
 				courseCode: courseCode,
 				courseName: courseName,
 				courseSec: courseSec,
-				professor: profEmailMatches[1],
+				professor: profEmail,
 				pin: pin
 			}).then(() => {
 				alert("course added");
 			}).catch((error) => {
 				alert(error);
+			});
+			
+			// also add course to professor's course list
+			let profCourseObj = { };
+			profCourseObj[courseName] = "true";
+			firebase.database().ref("/users/" + getUserFromEmail(user.email) + "/courses/").update(profCourseObj).catch((error) => {
+				alert("Could not add course to professor's course list");
 			});
         }).catch(function(error) {
             alert("problem reading DB: " + error.message);
