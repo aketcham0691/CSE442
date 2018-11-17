@@ -36,23 +36,36 @@ function initProfessorPage() {
  * Handles the class creation
  */
 function handleCreateClass() {
-	console.log("called");
 	var courseCode = document.getElementById("course-code").value;
 	var courseName = document.getElementById("course-name").value;
 	var courseSec = document.getElementById("course-section").value;
 	var user = firebase.auth().currentUser;
 	if (user) {
-		firebase.database().ref("courses/" + courseName).set({
-			courseCode: courseCode,
-			courseName: courseName,
-			courseSec: courseSec,
-			professor: user.uid,
-			attendance: [],
-		}).then(() => {
-			alert("course added");
-		}).catch((error) => {
-			alert(error);
-		})
+		firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
+			let emailGex = /(.+)@.+\..+/g; // (email)@domain.com
+			const profEmailMatches = emailGex.exec(snapshot.val().email);
+			if (!profEmailMatches || profEmailMatches.length !== 2) {
+				return alert("Error reading email name");
+			}
+			const profEmail = profEmailMatches[1];
+			
+			const max = 999999;
+			const min = 100000;
+			const pin = Math.floor(Math.random() * (max - min + 1)) + min; // generate a random pin between min and max
+			firebase.database().ref("/courses/" + courseName).set({
+				courseCode: courseCode,
+				courseName: courseName,
+				courseSec: courseSec,
+				professor: profEmailMatches[1],
+				pin: pin
+			}).then(() => {
+				alert("course added");
+			}).catch((error) => {
+				alert(error);
+			});
+        }).catch(function(error) {
+            alert("problem reading DB: " + error.message);
+        });
 	}
 	else {
 		alert("Please log in before creating a class");
