@@ -23,6 +23,18 @@ function initProfessorPage() {
         .catch(function(error) {
             alert("problem reading DB: " + error.message);
         })
+			
+		// populate the course list
+		firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
+			for (let courseName in snapshot.val().courses) {
+				addCourseToTable(courseName); // add the course to the table
+			}
+		}).catch((error) => {
+			console.log(error);
+			// no courses, so delete table
+			table.parentNode.removeChild(table);
+		});
+
         } else {
 
         }
@@ -30,6 +42,46 @@ function initProfessorPage() {
         document.getElementById('quickstart-sign-in').disabled = false;
         // [END_EXCLUDE]
     });
+}
+
+/**
+ * Adds a course to the course list HTML by course name
+ */
+function addCourseToTable(courseName) {
+	let table = document.getElementById("courseTable");
+	// get the corresponding course code
+	firebase.database().ref("/courses/" + courseName + "/").once("value").then((courseObj) => {
+		courseObj = courseObj.val();
+		const courseCode = courseObj.courseCode;
+		// add to the table
+		let row = table.insertRow(); // insert to end of table
+		let courseCodeCell = row.insertCell(); // insert course code
+		courseCodeCell.innerHTML = "<a href=\"./coursestatsprof.html\">" + courseCode + "</a>";
+		let courseNameCell = row.insertCell(); // insert course name
+		courseNameCell.innerHTML = courseName;
+		let takeAttendanceCell = row.insertCell(); // insert take attendance button
+		const thisAttendanceButtonId = "take_attendance_" + courseCode;
+		takeAttendanceCell.innerHTML = '<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="' + thisAttendanceButtonId + '">Take Attendance</button>';
+
+		// add an onclick listener to make the button open up a modal
+		// first, we need to get the professor name
+		firebase.database().ref("/users/" + courseObj.professor + "/").once("value").then((profObj) => {
+			profObj = profObj.val();
+			const profName = profObj.name;
+
+			// now, add the listener
+			let takeAttendanceButton = document.getElementById(thisAttendanceButtonId);
+			takeAttendanceButton.onclick = function() {
+				let qrImage = document.getElementsByClassName("QRCODE")[0];
+				var encoding = GenerateQRCode(courseCode, profName);
+				qrImage.src = encoding;
+			}
+		}).catch((error) => {
+			// do nothing
+		});
+	}).catch((error) => {
+		// do nothing
+	});
 }
 
 /**
@@ -64,12 +116,15 @@ function handleCreateClass() {
 				alert(error);
 			});
 			
-			// also add course to professor's course list
+			// add course to professor's course list
 			let profCourseObj = { };
 			profCourseObj[courseName] = "true";
 			firebase.database().ref("/users/" + getUserFromEmail(user.email) + "/courses/").update(profCourseObj).catch((error) => {
 				alert("Could not add course to professor's course list");
 			});
+			
+			// add course to the HTML on the page
+			addCourseToTable(courseName);
         }).catch(function(error) {
             alert("problem reading DB: " + error.message);
         });
