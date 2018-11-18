@@ -54,10 +54,10 @@
 			<h1>BOTTOM HAT</h1>
 			<p><i>Making a more productive learning environment by the day</i></p>
 		</div>
-		<h1>Welcome Professor Hertz!</h1>
+		<h1 id="professorWelcome">Welcome, Professor!</h1>
 		<h2>Classes</h2>
-		<p>Please select a class to start taking attendance, or create a new class below.</p>
-		<table class="table table-condensed">
+		<p id="helpMessage">Please select a class to start taking attendance, or create a new class below.</p>
+		<table class="table table-condensed" id="courseTable">
 			<thead>
 			<tr>
 				<th>Course Code</th>
@@ -66,52 +66,11 @@
 			</tr>
 			</thead>
 			<tbody>
-			<tr>
-				<td><a href="./coursestatsprof.html">CSE 331</a></td>
-				<td>Design and Analysis of Algorithms</td>
-				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance1">Take Attendance</button></td>
-			</tr>
-			<tr>
-				<td><a href="./coursestatsprof.html">CSE 460</a></td>
-				<td>Data Models and Query Languages</td>
-				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance2">Take Attendance</button></td>
-			</tr>
-			<tr>
-				<td><a href="./coursestatsprof.html">CSE442</a></td>
-				<td>Software Engineering</td>
-				<td><button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="take_attendance3">Take Attendance</button></td>
-			</tr>
+				<!-- to be populated on pageload -->
 			</tbody>
 		</table>
 		<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#createClassModal">Create Class</button>
 	</div>
-
-	<script>
-
-	// Get the button that opens the modal
-	var link1=document.getElementById("take_attendance1");
-	var link2=document.getElementById("take_attendance2");
-	var link3=document.getElementById("take_attendance3");
-
-	//Gets the <img> attribute through which we can change the QR code contents
-	var qrcodedata=document.getElementsByClassName("QRCODE");
-
-	// When the user clicks the button, open the modal 
-	link1.onclick = function() {
-		var encoding=GenerateQRCode("CSE331","Aatri Rudra");
-		qrcodedata[0].src=encoding;
-	}
-
-	link2.onclick = function() {
-		var encoding=GenerateQRCode("CSE460","Jan Chomicki");
-		qrcodedata[0].src=encoding;
-	}
-
-	link3.onclick = function() {
-		var encoding=GenerateQRCode("CSE442","Matthew Hertz");
-		qrcodedata[0].src=encoding;
-	}
-	</script>
 	
 	<!-- Take Attendance Modal -->
 	<div class="modal fade" id="takeAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="takeAttendanceModalLabel" aria-hidden="true">
