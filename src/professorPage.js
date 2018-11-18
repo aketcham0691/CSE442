@@ -24,15 +24,26 @@ function initProfessorPage() {
             alert("problem reading DB: " + error.message);
         })
 			
-		// populate the course list
-		firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
-			for (let courseName in snapshot.val().courses) {
-				addCourseToTable(courseName); // add the course to the table
+		// populate the course list and welcome message
+		firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(profObj) {
+			profObj = profObj.val();
+			
+			let welcomeMessage = document.getElementById("professorWelcome");
+			welcomeMessage.innerHTML = "Welcome, Professor " + profObj.name + "!"; // update the welcome message
+			
+			if (!profObj.courses) { // no courses, so delete table and update help message
+				let table = document.getElementById("courseTable");
+				//table.parentNode.removeChild(table);
+				let helpMessage = document.getElementById("helpMessage");
+				helpMessage.innerHTML = "Please create a new class below to get started!"; // set the help message accordingly
+			}
+			else {
+				for (let courseId in profObj.courses) {
+					addCourseToTable(courseId); // add the course to the table
+				}
 			}
 		}).catch((error) => {
 			console.log(error);
-			// no courses, so delete table
-			table.parentNode.removeChild(table);
 		});
 
         } else {
@@ -45,14 +56,15 @@ function initProfessorPage() {
 }
 
 /**
- * Adds a course to the course list HTML by course name
+ * Adds a course to the course list HTML by course ID
  */
-function addCourseToTable(courseName) {
+function addCourseToTable(courseId) {
 	let table = document.getElementById("courseTable");
-	// get the corresponding course code
-	firebase.database().ref("/courses/" + courseName + "/").once("value").then((courseObj) => {
+	// get the corresponding course object
+	firebase.database().ref("/courses/" + courseId + "/").once("value").then((courseObj) => {
 		courseObj = courseObj.val();
 		const courseCode = courseObj.courseCode;
+		const courseName = courseObj.courseName;
 		// add to the table
 		let row = table.insertRow(); // insert to end of table
 		let courseCodeCell = row.insertCell(); // insert course code
@@ -104,27 +116,32 @@ function handleCreateClass() {
 			const max = 999999;
 			const min = 100000;
 			const pin = Math.floor(Math.random() * (max - min + 1)) + min; // generate a random pin between min and max
-			firebase.database().ref("/courses/" + courseName).set({ // add course to course list
+			
+			const courseId = Date.now(); // use current timestamp as course ID
+			firebase.database().ref("/courses/" + courseId).set({ // add course to course list
 				courseCode: courseCode,
 				courseName: courseName,
 				courseSec: courseSec,
+				courseId: courseId,
 				professor: profEmail,
 				pin: pin
 			}).then(() => {
-				alert("course added");
+				// add course to professor's course list
+				let profCourseObj = { };
+				profCourseObj[courseId] = true;
+				firebase.database().ref("/users/" + getUserFromEmail(user.email) + "/courses/").update(profCourseObj).catch((error) => {
+					alert("Could not add course to professor's course list");
+				});
+				let helpMessage = document.getElementById("helpMessage");
+				helpMessage.innerHTML = "Please select a class to start taking attendance, or create a new class below."; // update the help message
+				
+				alert("Course added");
 			}).catch((error) => {
 				alert(error);
 			});
 			
-			// add course to professor's course list
-			let profCourseObj = { };
-			profCourseObj[courseName] = "true";
-			firebase.database().ref("/users/" + getUserFromEmail(user.email) + "/courses/").update(profCourseObj).catch((error) => {
-				alert("Could not add course to professor's course list");
-			});
-			
 			// add course to the HTML on the page
-			addCourseToTable(courseName);
+			addCourseToTable(courseId);
         }).catch(function(error) {
             alert("problem reading DB: " + error.message);
         });
