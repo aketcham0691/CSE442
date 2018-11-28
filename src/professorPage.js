@@ -18,7 +18,7 @@ function initProfessorPage() {
         var uid = user.uid;
         var providerData = user.providerData;
         firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
-            document.getElementById('userAvatar').innerHTML = snapshot.val().name;
+            document.getElementById('userAvatar').innerHTML = snapshot.key;
         })
         .catch(function(error) {
             alert("problem reading DB: " + error.message);
@@ -47,7 +47,7 @@ function initProfessorPage() {
 		});
 
         } else {
-
+        	window.location.replace("./index.html");
         }
         // [START_EXCLUDE silent]
         document.getElementById('quickstart-sign-in').disabled = false;
@@ -65,10 +65,11 @@ function addCourseToTable(courseId) {
 		courseObj = courseObj.val();
 		const courseCode = courseObj.courseCode;
 		const courseName = courseObj.courseName;
+		const courseId = courseObj.courseId;
 		// add to the table
 		let row = table.insertRow(); // insert to end of table
 		let courseCodeCell = row.insertCell(); // insert course code
-		courseCodeCell.innerHTML = "<a href=\"./coursestatsprof.html\">" + courseCode + "</a>";
+		courseCodeCell.innerHTML = "<a href=\"./coursestatsprof.html?courseId=" + courseId+ "\">" + courseCode + "</a>";
 		let courseNameCell = row.insertCell(); // insert course name
 		courseNameCell.innerHTML = courseName;
 		let takeAttendanceCell = row.insertCell(); // insert take attendance button

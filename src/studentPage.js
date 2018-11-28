@@ -18,13 +18,13 @@ function initStudentPage() {
         var uid = user.uid;
         var providerData = user.providerData;
         firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
-            document.getElementById('userAvatar').innerHTML = snapshot.val().name;
+            document.getElementById('userAvatar').innerHTML = snapshot.key;
         })
         .catch(function(error) {
             alert("problem reading DB: " + error.message);
         })
         } else {
-
+            window.location.replace("./index.html");
         }
         // [START_EXCLUDE silent]
         
