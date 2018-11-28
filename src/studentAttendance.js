@@ -4,7 +4,7 @@
  *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
  *    out, and that is where we update the UI.
  */
-function initProfessorPage() {
+function initStudentClassPage() {
     // Listening for auth state changes.
     // [START authstatelistener]
     return new Promise(function(resolve, reject) {
@@ -19,8 +19,10 @@ function initProfessorPage() {
 	        var isAnonymous = user.isAnonymous;
 	        var uid = user.uid;
 	        var providerData = user.providerData;
+	        var uname;
 	        firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
 	            document.getElementById('userAvatar').innerHTML = snapshot.key;
+	            uname = snapshot.key;
 	        })
 	        .catch(function(error) {
 	            alert("problem reading DB: " + error.message);
@@ -32,7 +34,7 @@ function initProfessorPage() {
 				
 				if (!attendanceObj.attendance) { // no courses, so delete table and update help message
 					alert("No attendance has been taken for this course.");
-					window.location.replace("./ProfessorPage.html");
+					window.location.replace("./studentPage.html");
 				}
 				else {
 					var header = document.getElementById("class_header");
@@ -54,23 +56,17 @@ function initProfessorPage() {
 						length++;
 					}
 
-				    var num_students = 0;
-				    for (student in attendanceObj.roster) {
-				    	var student_row = table.insertRow(num_students+1)
-				    	student_row.insertCell(0).innerHTML = student;
-				    	num_students++;
-				    }
-
+				    var student_row = table.insertRow(1);
+				    student_row.insertCell(0).innerHTML = uname;
 					
-					for (var j = 1; j <= num_students; j++) {
-						for(var k = 1; k <= count; k++) {
-							table.rows[j].insertCell(k).innerHTML = ' ';
-						}
+					for(var j = 1; j <= count; j++) {
+						table.rows[1].insertCell(j).innerHTML = ' ';
 					}
+
 					count = 1;
 
 					for (date in attendanceObj.attendance) {
-						addAttendanceToTable(date, count, length).then(function(result){
+						addAttendanceToTable(date, count, length, uname).then(function(result){
 							console.log(result);
 						});
 						count++;
@@ -100,7 +96,7 @@ function getUrlVars() {
 /**
  * Adds a course to the course list HTML by course ID
  */
-function addAttendanceToTable(date, col, num_cols) {
+function addAttendanceToTable(date, col, num_cols, student) {
 
 	return new Promise(function(resolve, reject) {
 		var table = document.getElementById("attendance_table");
@@ -108,27 +104,9 @@ function addAttendanceToTable(date, col, num_cols) {
 		firebase.database().ref("/courses/" + getUrlVars()["courseId"] + "/attendance/" + date).once("value").then(function(attendanceObj) {
 			
 			var children = 0;
-			attendanceObj.forEach(function(child) {
-				var contains_child = false;
-				var i = 0;
-				for (i = 0, row; row = table.rows[i]; i++) {
-					if (row.cells[0].innerHTML == child.key) {
-						row.cells[col].innerHTML = '✔';
-						contains_child = true;
-						break;
-					}
-
-				}
-				if (!contains_child) {
-					var row = table.insertRow(i);
-					row.insertCell(0).innerHTML = child.key;
-					for(var j = 1; j <= num_cols; j++) {
-						row.insertCell(j).innerHTML = ' ';
-					}
-					row.cells[col].innerHTML = '✔';
-				}
-				children++;
-			});
+			if (attendanceObj.hasChild(student)) {
+				table.rows[1].cells[col].innerHTML = '✔';
+			}
 		}).then(function(result) {
 			resolve("for each worked, children: " + children);
 		}).catch((error) => {

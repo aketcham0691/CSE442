@@ -15,8 +15,11 @@
 		
 	<script>
 			window.onload = function() {
-				initProfessorPage();
-				setLoader();
+				initProfessorPage().then(function(result){
+					console.log(result);
+					showPage();
+				});
+				// setLoader();
 			}
 	</script>
 	<style>
@@ -69,7 +72,7 @@
 	</style>
 	</head>
 	<body style="background-color:#F7F7F7">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav id="navbar" style="visibility:hidden;" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="index.html">
           <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
       </a>
@@ -95,7 +98,7 @@
   </nav>
 
   		<div id="loader"></div>
-  		<div style="display:none;" id="myDiv" class="animate-bottom">
+  		<div  id="myDiv" style="display:none;" class="animate-bottom">
 			<div class="page-header">
 				<h1 id="class_header" align="center">CSE442 -- Software Engineering</h1>
 			</div>
@@ -109,18 +112,5 @@
 				<br><br><br><br>
 			</div>
 		</div>
-		<script>
-			var myVar;
-
-			function setLoader() {
-			    myVar = setTimeout(showPage, 2000);
-			}
-
-			function showPage() {
-				sortTable();
-			  	document.getElementById("loader").style.display = "none";
-			  	document.getElementById("myDiv").style.display = "block";
-			}
-		</script>
 	</body>
 </html>

@@ -114,63 +114,66 @@ function sendPasswordReset() {
 function initApp() {
     // Listening for auth state changes.
     // [START authstatelistener]
-    firebase.auth().onAuthStateChanged(function(user) {
-    // [END_EXCLUDE]
-    if (user) {
-    // User is signed in.
-    
-    firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
-        if (!snapshot.val()) {
-            var name = document.getElementById("name").value;
-            var uname = document.getElementById("email").value;
-            var email = uname + "@buffalo.edu";
-            var choice = document.getElementById("accountTypes");
-            choice = (choice.options[choice.selectedIndex].value);
-            var account_type = choice == '1' ? "Student" : "Professor";
+    return new Promise(function(resolve, reject) {
+        firebase.auth().onAuthStateChanged(function(user) {
+            // [END_EXCLUDE]
+            if (user) {
+            // User is signed in.
+            firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
+                if (!snapshot.val()) {
+                    var name = document.getElementById("name").value;
+                    var uname = document.getElementById("email").value;
+                    var email = uname + "@buffalo.edu";
+                    var choice = document.getElementById("accountTypes");
+                    choice = (choice.options[choice.selectedIndex].value);
+                    var account_type = choice == '1' ? "Student" : "Professor";
 
-            var database = firebase.database();
-            firebase.database().ref('users/' + uname).set({
-                name: name,
-                email: email,
-                account_type : account_type
-            })
-            .then(function() {
-                if (account_type == "Student") {
-                    window.location.replace("./studentPage.html");
+                    var database = firebase.database();
+                    firebase.database().ref('users/' + uname).set({
+                        name: name,
+                        email: email,
+                        account_type : account_type
+                    })
+                    .then(function() {
+                        if (account_type == "Student") {
+                            window.location.replace("./studentPage.html");
+                        } else {
+                            window.location.replace("./ProfessorPage.html");
+                        }
+                    })
+                    .catch(function(error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    alert("Unable to update database: " + errorMessage);
+                    console.error(errorMessage);
+                    })
                 } else {
-                    window.location.replace("./ProfessorPage.html");
+                    var snapshot = snapshot.val();
+                    if (snapshot.account_type == "Student") {
+                        window.location.replace("./studentPage.html");
+                    } else {
+                        window.location.replace("./ProfessorPage.html");
+                    }
                 }
+            }).then(function(result) {
+                reject("user logged in");
+            }).catch(function(error) {
+                alert("problem reading DB: " + error.message);
             })
-            .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            alert("Unable to update database: " + errorMessage);
-            console.error(errorMessage);
-            })
-        } else {
-            var snapshot = snapshot.val();
-            if (snapshot.account_type == "Student") {
-                window.location.replace("./studentPage.html");
+            
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            
             } else {
-                window.location.replace("./ProfessorPage.html");
+                resolve("worked");
             }
-        }
-    })
-    .catch(function(error) {
-        alert("problem reading DB: " + error.message);
-    })
-    
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    var providerData = user.providerData;
-    
-    } else {
+        });
+    });
 
-    }
-});
 }

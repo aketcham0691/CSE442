@@ -7,32 +7,36 @@ username='';
 function initStudentPage() {
     // Listening for auth state changes.
     // [START authstatelistener]
-    firebase.auth().onAuthStateChanged(function(user) {
+    return new Promise(function(resolve, reject) {
+        firebase.auth().onAuthStateChanged(function(user) {
         // [END_EXCLUDE]
         if (user) {
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
-        firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
-            document.getElementById('userAvatar').innerHTML = snapshot.val().name;
-            username=snapshot.key;
-            ShowCourses()
-        })
-        .catch(function(error) {
-            alert("problem reading DB: " + error.message);
-        })
-        } else {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var isAnonymous = user.isAnonymous;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
+                document.getElementById('userAvatar').innerHTML = snapshot.key;
+                username=snapshot.key;
+                ShowCourses();
+            }).then(function(result) {
+                resolve("worked");
+            }).catch(function(error) {
+                alert("problem reading DB: " + error.message);
+            })
+            } else {
 
-        }
-        // [START_EXCLUDE silent]
-        
-        // [END_EXCLUDE]
+            }
+            // [START_EXCLUDE silent]
+            
+            // [END_EXCLUDE]
+        });
     });
+    
 }
 
 
@@ -83,6 +87,7 @@ function AddCourse(){
                  Sec=snapshot.val()[c].courseSec
                  //adding that course code and name in user's object
                 firebase.database().ref('/users/'+username+'/courses/'+snapshot.val()[c].courseId).set(snapshot.val()[c].courseCode);
+                firebase.database().ref('/courses/' + c +'/roster/' + username).set(true);
                 //emptying the input
                 document.getElementById('course').value=''
                 //course is inserted
@@ -125,7 +130,7 @@ function AddCourse(){
             //looping through user's registered courses
             for(c in snapshot.val()){
                     //concatinating anchor tags to then later on add it to the modal body
-                    coursesListBody = coursesListBody + "<a href='./student_class.html' style='padding: 2px'><button type='button' class='btn btn-primary' href='#'>"+snapshot.val()[c]+"</button></a>"
+                    coursesListBody = coursesListBody + "<a href='./student_class.html?courseId=" + c +  "' style='padding: 2px'><button type='button' class='btn btn-primary' href='#'>"+snapshot.val()[c]+"</button></a>"
             }
             //adding all the anchor tags to modal body
             document.getElementById('courses').innerHTML=coursesListBody;

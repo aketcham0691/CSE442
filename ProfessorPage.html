@@ -16,15 +16,67 @@
   <script src="./src/QRcode.js"></script>
   <script>
       window.onload = function() {
-        initProfessorPage();
-    }
+			initProfessorPage().then(function(result){
+				console.log(result);
+				showPage();
+			});
+			// setLoader();
+		}
   </script>
+  <style>
+	/* Center the loader */
+	#loader {
+	  position: absolute;
+	  left: 50%;
+	  top: 50%;
+	  z-index: 1;
+	  width: 150px;
+	  height: 150px;
+	  margin: -75px 0 0 -75px;
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid green;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}
+
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+
+	/* Add animation to "page content" */
+	.animate-bottom {
+	  position: relative;
+	  -webkit-animation-name: animatebottom;
+	  -webkit-animation-duration: 1s;
+	  animation-name: animatebottom;
+	  animation-duration: 1s
+	}
+
+	@-webkit-keyframes animatebottom {
+	  from { bottom:-100px; opacity:0 } 
+	  to { bottom:0px; opacity:1 }
+	}
+
+	@keyframes animatebottom { 
+	  from{ bottom:-100px; opacity:0 } 
+	  to{ bottom:0; opacity:1 }
+	}
+	</style>
 </head>
 
 <body>
 
 <!-- Image and text -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav id="navbar" style="visibility:hidden;" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="index.html">
           <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
       </a>
@@ -49,104 +101,107 @@
     </div>
   </nav>
 
-	<div class="container">
-		<div class="jumbotron"> 
-			<h1>BOTTOM HAT</h1>
-			<p><i>Making a more productive learning environment by the day</i></p>
+  	<div id="loader"></div>
+  	<div  id="myDiv" style="display:none;" class="animate-bottom">
+		<div class="container">
+			<div class="jumbotron"> 
+				<h1>BOTTOM HAT</h1>
+				<p><i>Making a more productive learning environment by the day</i></p>
+			</div>
+			<h1 id="professorWelcome">Welcome, Professor!</h1>
+			<h2>Classes</h2>
+			<p id="helpMessage">Please select a class to start taking attendance, or create a new class below.</p>
+			<table class="table table-condensed" id="courseTable">
+				<thead>
+				<tr>
+					<th>Course Code</th>
+					<th>Course Name</th>
+					<th>Click to Take Attendance</th>
+				</tr>
+				</thead>
+				<tbody>
+					<!-- to be populated on pageload -->
+				</tbody>
+			</table>
+			<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#createClassModal">Create Class</button>
 		</div>
-		<h1 id="professorWelcome">Welcome, Professor!</h1>
-		<h2>Classes</h2>
-		<p id="helpMessage">Please select a class to start taking attendance, or create a new class below.</p>
-		<table class="table table-condensed" id="courseTable">
-			<thead>
-			<tr>
-				<th>Course Code</th>
-				<th>Course Name</th>
-				<th>Click to Take Attendance</th>
-			</tr>
-			</thead>
-			<tbody>
-				<!-- to be populated on pageload -->
-			</tbody>
-		</table>
-		<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#createClassModal">Create Class</button>
-	</div>
-	
-	<!-- Take Attendance Modal -->
-	<div class="modal fade" id="takeAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="takeAttendanceModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Take Attendance</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<img class="QRCODE" src="https://api.qrserver.com/v1/create-qr-code/?data=somerandomqrcode" class="center">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		
+		<!-- Take Attendance Modal -->
+		<div class="modal fade" id="takeAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="takeAttendanceModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Take Attendance</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<img class="QRCODE" src="https://api.qrserver.com/v1/create-qr-code/?data=somerandomqrcode" class="center">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- Create Class Modal -->
-	<div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Create Class</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form class="modal-content animate" action="javascript:handleCreateClass()" id="newClass">
-						<table class="table table-borderless mx-auto">
-							<tbody>
-								<tr>
-									<th scope="row">
-										<div class="input-group m-0 p-0">
-											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon1">Course Code</span>
+		<!-- Create Class Modal -->
+		<div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Create Class</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form class="modal-content animate" action="javascript:handleCreateClass()" id="newClass">
+							<table class="table table-borderless mx-auto">
+								<tbody>
+									<tr>
+										<th scope="row">
+											<div class="input-group m-0 p-0">
+												<div class="input-group-prepend">
+													<span class="input-group-text" id="basic-addon1">Course Code</span>
+												</div>
+												<input type="text" class="form-control" placeholder="CSE 442" aria-label="Course Code" aria-describedby="basic-addon1" id="course-code" required>
 											</div>
-											<input type="text" class="form-control" placeholder="CSE 442" aria-label="Course Code" aria-describedby="basic-addon1" id="course-code" required>
-										</div>
-									</th>
-								</tr>
-								<tr>
-									<th scope="row">
-										<div class="input-group m-0 p-0">
-											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon2">Course Name</span>
+										</th>
+									</tr>
+									<tr>
+										<th scope="row">
+											<div class="input-group m-0 p-0">
+												<div class="input-group-prepend">
+													<span class="input-group-text" id="basic-addon2">Course Name</span>
+												</div>
+												<input type="text" class="form-control" placeholder="Name of Course" aria-label="Course Name" aria-describedby="basic-addon2" id="course-name" required>
 											</div>
-											<input type="text" class="form-control" placeholder="Name of Course" aria-label="Course Name" aria-describedby="basic-addon2" id="course-name" required>
-										</div>
-									</th>
-								</tr>
-								<tr>
-									<th scope="row">
-										<div class="input-group m-0 p-0">
-											<div class="input-group-prepend">
-												<span class="input-group-text" id="basic-addon3">Course Section</span>
+										</th>
+									</tr>
+									<tr>
+										<th scope="row">
+											<div class="input-group m-0 p-0">
+												<div class="input-group-prepend">
+													<span class="input-group-text" id="basic-addon3">Course Section</span>
+												</div>
+												<input type="text" class="form-control" placeholder="A, B, X" aria-label="Course Section" aria-describedby="basic-addon3" id="course-section" required>
 											</div>
-											<input type="text" class="form-control" placeholder="A, B, X" aria-label="Course Section" aria-describedby="basic-addon3" id="course-section" required>
-										</div>
-									</th>
-								</tr>
-								<tr>
-									<th scope="row">
-										<button id="createClassButton" style="width: 100%" type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
-									</th>
-								</tr>
-							 </tbody>
-						</table>
-					 </form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+										</th>
+									</tr>
+									<tr>
+										<th scope="row">
+											<button id="createClassButton" style="width: 100%" type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+										</th>
+									</tr>
+								 </tbody>
+							</table>
+						 </form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
 				</div>
 			</div>
 		</div>
