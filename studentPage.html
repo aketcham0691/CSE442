@@ -98,8 +98,8 @@
 <!--<button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Take Attendance</button>
 <img src=hat.png width="60" height="60" class="d-inline-block align-top" alt="">
 -->
-<button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Add courses</button>
-<input type="text" name="qrcode-text"
+<button type="button" class="btn btn-success btn-lg btn-block" data-toggle = "modal" data-target= "#ConfirmModal">Add courses</button>
+<input type="text" name="qrcode-text" id="attendance"
 ><label class=qrcode-text-btn>
   <input type=file
          accept="image/*"
@@ -121,35 +121,65 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-         <a href="student_class.html"><button type="button" class="btn btn-primary">CSE331</button></a>
-         <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE460</button></a>
-         <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE442</button></a>
-
+      <div class="modal-body" id="courses">
+         
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
 
-<!-- ModalAttendance -->
-<div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    </div>
+  </div>
+</div>
+
+<!-- ConfirmModal -->
+<div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Attendance</h5>
+        <h5 class="modal-title" id="ConfirmModalLabel">Enter Course pin to add</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-       This feature is currently being worked on. 
-      </div>
+      <div class="modal-body" style="text-align: center">
+          <input type="text" name="qrcode-text" id="course" style="float: left;" placeholder="1234">
+          <button type="button" class="btn btn-success" onclick="AddCourse()" data-dismiss="modal">Add</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 
-      <div class="modal-footer">
+      </div>
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+
+<!-- CourseDetails -->
+<div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="courseModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="courseModalLabel">Course Registered</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body" style="text-align: center">
+        <div id="courseDetails">
+            <h4 id="CName">Name</h4>
+            <h4 id="CProfessor">Professor</h4>
+            <h4 id="CCode">Code</h4>
+            <h4 id="CSection">Section</h4>
+        </div>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
-
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div> -->
 
     </div>
   </div>
