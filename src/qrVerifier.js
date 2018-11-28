@@ -10,6 +10,16 @@ var data=CourseCode+ProfessorName+dateTime;
 return data;
 }
 
+function GenerateQRCode3(CourseCode,ProfessorName)
+{
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + (today.getMinutes()+1);
+var dateTime = date+time;
+var data=CourseCode+ProfessorName+dateTime;
+return data;
+}
+
 
  function openQRCamera(node) {
   var reader = new FileReader();
@@ -36,15 +46,15 @@ return data;
   function Verifier(information)
   {
  
-    if(GenerateQRCode2("CSE331", "Aatri Rudra")==information)
+    if((GenerateQRCode2("CSE331", "Aatri Rudra")==information)||(GenerateQRCode3("CSE331","Aatri Rudra")==information))
     {
       alert("You have been Marked Present for CSE331");
     }
-    else if (GenerateQRCode2("CSE460", "Jan Chomicki")==information){
+    else if ((GenerateQRCode2("CSE460", "Jan Chomicki")==information)||(GenerateQRCode3("CSE460", "Jan Chomicki")==information)){
       alert("You have been Marked Present for CSE460");
 
     }
-    else if (GenerateQRCode2("CSE442", "Matthew Hertz")==information){
+    else if ((GenerateQRCode2("CSE442", "Matthew Hertz")==information)||(GenerateQRCode3("CSE442", "Matthew Hertz")==information)){
        alert("You have been Marked Present for CSE442");
     }
     else
