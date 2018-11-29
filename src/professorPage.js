@@ -87,7 +87,7 @@ function addCourseToTable(courseId) {
 			let takeAttendanceButton = document.getElementById(thisAttendanceButtonId);
 			takeAttendanceButton.onclick = function() {
 				let qrImage = document.getElementsByClassName("QRCODE")[0];
-				var encoding = GenerateQRCode(courseCode, profName);
+				var encoding = GenerateQRCode(courseId);
 				qrImage.src = encoding;
 			}
 		}).catch((error) => {
