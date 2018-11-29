@@ -6,53 +6,54 @@
 function initProfessorPage() {
     // Listening for auth state changes.
     // [START authstatelistener]
-    firebase.auth().onAuthStateChanged(function(user) {
-        // [END_EXCLUDE]
-        if (user) {
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
-        firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
-            document.getElementById('userAvatar').innerHTML = snapshot.key;
-        })
-        .catch(function(error) {
-            alert("problem reading DB: " + error.message);
-        })
-			
-		// populate the course list and welcome message
-		firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(profObj) {
-			profObj = profObj.val();
-			
-			let welcomeMessage = document.getElementById("professorWelcome");
-			welcomeMessage.innerHTML = "Welcome, Professor " + profObj.name + "!"; // update the welcome message
-			
-			if (!profObj.courses) { // no courses, so delete table and update help message
-				let table = document.getElementById("courseTable");
-				//table.parentNode.removeChild(table);
-				let helpMessage = document.getElementById("helpMessage");
-				helpMessage.innerHTML = "Please create a new class below to get started!"; // set the help message accordingly
-			}
-			else {
-				for (let courseId in profObj.courses) {
-					addCourseToTable(courseId); // add the course to the table
+    return new Promise(function(resolve, reject) {
+	    firebase.auth().onAuthStateChanged(function(user) {
+	        // [END_EXCLUDE]
+	        if (user) {
+	        // User is signed in.
+	        var displayName = user.displayName;
+	        var email = user.email;
+	        var emailVerified = user.emailVerified;
+	        var photoURL = user.photoURL;
+	        var isAnonymous = user.isAnonymous;
+	        var uid = user.uid;
+	        var providerData = user.providerData;
+	        firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(snapshot) {
+	            document.getElementById('userAvatar').innerHTML = snapshot.key;
+	        })
+	        .catch(function(error) {
+	            alert("problem reading DB: " + error.message);
+	        })
+				
+			// populate the course list and welcome message
+			firebase.database().ref('/users/' + getUserFromEmail(user.email)).once('value').then(function(profObj) {
+				profObj = profObj.val();
+				
+				let welcomeMessage = document.getElementById("professorWelcome");
+				welcomeMessage.innerHTML = "Welcome, Professor " + profObj.name + "!"; // update the welcome message
+				
+				if (!profObj.courses) { // no courses, so delete table and update help message
+					let table = document.getElementById("courseTable");
+					//table.parentNode.removeChild(table);
+					let helpMessage = document.getElementById("helpMessage");
+					helpMessage.innerHTML = "Please create a new class below to get started!"; // set the help message accordingly
 				}
-			}
-		}).catch((error) => {
-			console.log(error);
-		});
+				else {
+					for (let courseId in profObj.courses) {
+						addCourseToTable(courseId); // add the course to the table
+					}
+				}
+			}).then(function(){
+				resolve("worked");
+			}).catch((error) => {
+				console.log(error);
+			});
 
-        } else {
-        	window.location.replace("./index.html");
-        }
-        // [START_EXCLUDE silent]
-        document.getElementById('quickstart-sign-in').disabled = false;
-        // [END_EXCLUDE]
-    });
+	        } else {
+	        	window.location.replace("./index.html");
+	        }
+	    });
+	});
 }
 
 /**
