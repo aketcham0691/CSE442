@@ -1,13 +1,14 @@
  //Creat by Mohammad Talha the only Hafeez
 //This function reads the QR code 
 
-function GenerateQRCode2(CourseCode,ProfessorName){
+function GenerateQRCode2(courseId){
 var today = new Date();
 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 var time = today.getHours() + ":" + today.getMinutes();
 var dateTime = date+time;
-var data=CourseCode+ProfessorName+dateTime;
-return data;
+var data=courseId+dateTime;
+var URLendcoding="https://api.qrserver.com/v1/create-qr-code/?data="+data;
+return URLendcoding;
 }
 
 
@@ -35,7 +36,49 @@ return data;
 
   function Verifier(information)
   {
- 
+      //get current user
+      user = firebase.auth().currentUser;
+      var today = new Date();
+      
+      let emailGex = /(.+)@.+\..+/g; // (email)@domain.com
+      const studentEmailMatches = emailGex.exec(user.email);
+      if (!studentEmailMatches || studentEmailMatches.length !== 2) {
+          return alert("Error reading email name");
+      }
+      const studentEmail = studentEmailMatches[1];
+      console.log(studentEmail);
+      
+      //object of student name
+      var obj = {
+          
+      };
+      obj[studentEmail] = "true";
+      
+      
+      //check all student courses
+      firebase.database().ref('/users/'+getUserFromEmail(user.email)+'/courses').once('value').then(function(snapshot){
+          
+          snapshot.forEach(function(childSnapshot) {
+              console.log(childSnapshot.key);
+              
+              if(GenerateQRCode2(childSnapshot.key)==information){
+                  
+                  firebase.database().ref("courses/"+childSnapshot.key+"/attendance/"+(today.getMonth()+today.getDate()+today.getYear())).set(obj).then(()=>{
+                      alert("You have been marked presnt");
+                      break;
+                  }).catch((error)=>{
+                          alert("cheater Cheater Pumkin Eater");
+                  });
+                           
+                }
+        });
+                                          
+      }).catch((error)=>{
+          console.log("You are not signed up for any courses");
+      });
+      
+      
+ /*
     if(GenerateQRCode2("CSE331", "Aatri Rudra")==information)
     {
       alert("You have been Marked Present for CSE331");
@@ -50,6 +93,12 @@ return data;
     else
     {
       alert("Cheater cheater pumkin eater");
-    }
+    }*/
 
+      
+//          for (let courseName in snapshot.val().courses){
+//              console.log(courseName);
+//              console.log(snapshot.val().course[courseName]);
+//              console.log("heloooo");
+//          }
   }
