@@ -66,6 +66,7 @@ function addCourseToTable(courseId) {
 		courseObj = courseObj.val();
 		const courseCode = courseObj.courseCode;
 		const courseName = courseObj.courseName;
+		const coursePin = courseObj.pin;
 		const courseId = courseObj.courseId;
 		// add to the table
 		let row = table.insertRow(); // insert to end of table
@@ -73,6 +74,8 @@ function addCourseToTable(courseId) {
 		courseCodeCell.innerHTML = "<a href=\"./coursestatsprof.html?courseId=" + courseId+ "\">" + courseCode + "</a>";
 		let courseNameCell = row.insertCell(); // insert course name
 		courseNameCell.innerHTML = courseName;
+		let coursePinCell = row.insertCell(); // insert course pin
+		coursePinCell.innerHTML = coursePin;
 		let takeAttendanceCell = row.insertCell(); // insert take attendance button
 		const thisAttendanceButtonId = "take_attendance_" + courseCode;
 		takeAttendanceCell.innerHTML = '<button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#takeAttendanceModal" id="' + thisAttendanceButtonId + '">Take Attendance</button>';
