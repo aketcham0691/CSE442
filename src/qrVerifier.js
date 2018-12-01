@@ -1,22 +1,23 @@
  //Creat by Mohammad Talha the only Hafeez
 //This function reads the QR code 
-
+//so many generates
 function GenerateQRCode2(courseId){
 var today = new Date();
 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 var time = today.getHours() + ":" + today.getMinutes();
 var dateTime = date+time;
 var data=courseId+dateTime;
-return data;
+var URLendcoding="https://api.qrserver.com/v1/create-qr-code/?data="+data;
+return URLendcoding;
 }
 
-function GenerateQRCode3(courseId)
+function GenerateQRCode3(CourseCode,ProfessorName)
 {
 var today = new Date();
 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 var time = today.getHours() + ":" + (today.getMinutes()+1);
 var dateTime = date+time;
-var data=courseId+dateTime;
+var data=CourseCode+ProfessorName+dateTime;
 return data;
 }
 
@@ -73,7 +74,7 @@ return data;
       //check all student courses
       firebase.database().ref('/users/'+getUserFromEmail(user.email)+'/courses').once('value').then(function(snapshot){
           
-          if((GenerateQRCode2(classID)==information)||(GenerateQRCode3(classID)==information) && snapshot.hasChild(classID)){
+          if((GenerateQRCode2(classID)==information) && snapshot.hasChild(classID)){
               
               console.log("in if")
               var dateString = ('0' + (today.getMonth()+1)).slice(-2)
