@@ -14,7 +14,10 @@
   <script src="./src/studentPage.js"></script>
   <script>
       window.onload = function() {
-        initStudentPage();
+      initStudentPage().then(function(result){
+        console.log(result);
+        showPage();
+      });
     }
   </script>
   
@@ -52,13 +55,59 @@
   height: 1px;
   opacity: 0;
   }
+  /* Center the loader */
+  #loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid green;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+  }
+
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Add animation to "page content" */
+  .animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+  }
+
+  @-webkit-keyframes animatebottom {
+    from { bottom:-100px; opacity:0 } 
+    to { bottom:0px; opacity:1 }
+  }
+
+  @keyframes animatebottom { 
+    from{ bottom:-100px; opacity:0 } 
+    to{ bottom:0; opacity:1 }
+  }
   </style>
 
 </head>
 
 <body>
 <!-- Image and text -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav id="navbar" style="visibility:hidden;" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="index.html">
           <img src=hat.png style="background-color:white;" width="30" height="30" class="d-inline-block align-top" alt="">
       </a>
@@ -83,7 +132,8 @@
     </div>
   </nav>
 
-
+<div id="loader"></div>
+    <div  id="myDiv" style="display:none;" class="animate-bottom">
 <div class="container">
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
@@ -98,15 +148,15 @@
 <!--<button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Take Attendance</button>
 <img src=hat.png width="60" height="60" class="d-inline-block align-top" alt="">
 -->
-<button type="button" class="btn btn-success btn-lg btn-block disabled" ata-toggle = "modal" data-target= "#attendanceModal">Add courses</button>
-<input type="text" name="qrcode-text"
+<button type="button" class="btn btn-success btn-lg btn-block" data-toggle = "modal" data-target= "#ConfirmModal">Add courses</button>
+<center><input type="text" name="qrcode-text" id="attendance"
 ><label class=qrcode-text-btn>
   <input type=file
          accept="image/*"
          capture=environment
          onchange="openQRCamera(this);"
 
-         tabindex=-1> <img src=att.png width="100" height="100" class="d-inline-block align-top" alt=""> </input>
+         tabindex=-1> <img src=app2.png width="100" height="100" class="d-inline-block align-top" alt=""> </input></center>
 </div>
 
 
@@ -121,38 +171,69 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-         <a href="student_class.html"><button type="button" class="btn btn-primary">CSE331</button></a>
-         <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE460</button></a>
-         <a href="./student_class.html"><button type="button" class="btn btn-primary" href="#">CSE442</button></a>
-
+      <div class="modal-body" id="courses">
+         
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
 
-<!-- ModalAttendance -->
-<div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    </div>
+  </div>
+</div>
+
+<!-- ConfirmModal -->
+<div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel1">Attendance</h5>
+        <h5 class="modal-title" id="ConfirmModalLabel">Enter Course pin to add</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-       This feature is currently being worked on. 
-      </div>
+      <div class="modal-body" style="text-align: center">
+          <input type="text" name="qrcode-text" id="course" style="float: left;" placeholder="1234">
+          <button type="button" class="btn btn-success" onclick="AddCourse()" data-dismiss="modal">Add</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 
-      <div class="modal-footer">
+      </div>
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-
-
+      </div> -->
 
     </div>
   </div>
+</div>
+
+
+<!-- CourseDetails -->
+<div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="courseModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="courseModalLabel">Course Registered</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <div id="courseDetails">
+            <h4 id="CName">Name</h4>
+            <h4 id="CProfessor">Professor</h4>
+            <h4 id="CCode">Code</h4>
+            <h4 id="CSection">Section</h4>
+        </div>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div> -->
+
+    </div>
+  </div>
+</div>
 </div>
 
 </body>
