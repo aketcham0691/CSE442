@@ -31,6 +31,7 @@ return URLendcoding;
   }
 
 
+
   //Created By Rajeev Gundavarapu and Mohammad Hafeez
   //Checks if the read 
 
@@ -52,53 +53,38 @@ return URLendcoding;
       var obj = {
           
       };
-      obj[studentEmail] = "true";
+      obj[studentEmail] = true;
+      
+      var classID = information.substring(0,13);
+      console.log(classID);
+      console.log(information);
       
       
       //check all student courses
       firebase.database().ref('/users/'+getUserFromEmail(user.email)+'/courses').once('value').then(function(snapshot){
           
-          snapshot.forEach(function(childSnapshot) {
-              console.log(childSnapshot.key);
+          if((GenerateQRCode2(classID)==information) && snapshot.hasChild(classID)){
               
-              if(GenerateQRCode2(childSnapshot.key)==information){
-                  
-                  firebase.database().ref("courses/"+childSnapshot.key+"/attendance/"+(today.getMonth()+today.getDate()+today.getYear())).set(obj).then(()=>{
+              console.log("in if")
+              var dateString = ('0' + (today.getMonth()+1)).slice(-2)
+             + ('0' + today.getDate()).slice(-2)
+             + (today.getYear()-100);
+              var ref = "courses/"+classID+"/attendance/"+dateString; 
+              console.log(ref);
+              firebase.database().ref(ref).update(obj).then(()=>{
                       alert("You have been marked presnt");
-                      break;
                   }).catch((error)=>{
                           alert("cheater Cheater Pumkin Eater");
                   });
-                           
-                }
-        });
+            
+              
+          }
+          
+          
                                           
       }).catch((error)=>{
           console.log("You are not signed up for any courses");
       });
       
       
- /*
-    if(GenerateQRCode2("CSE331", "Aatri Rudra")==information)
-    {
-      alert("You have been Marked Present for CSE331");
-    }
-    else if (GenerateQRCode2("CSE460", "Jan Chomicki")==information){
-      alert("You have been Marked Present for CSE460");
-
-    }
-    else if (GenerateQRCode2("CSE442", "Matthew Hertz")==information){
-       alert("You have been Marked Present for CSE442");
-    }
-    else
-    {
-      alert("Cheater cheater pumkin eater");
-    }*/
-
-      
-//          for (let courseName in snapshot.val().courses){
-//              console.log(courseName);
-//              console.log(snapshot.val().course[courseName]);
-//              console.log("heloooo");
-//          }
   }
