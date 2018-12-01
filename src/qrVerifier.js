@@ -1,6 +1,6 @@
  //Creat by Mohammad Talha the only Hafeez
 //This function reads the QR code 
-
+//so many generates
 function GenerateQRCode2(courseId){
 var today = new Date();
 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
