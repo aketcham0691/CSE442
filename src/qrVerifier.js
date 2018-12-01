@@ -11,6 +11,16 @@ var URLendcoding="https://api.qrserver.com/v1/create-qr-code/?data="+data;
 return URLendcoding;
 }
 
+function GenerateQRCode3(CourseCode,ProfessorName)
+{
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + (today.getMinutes()+1);
+var dateTime = date+time;
+var data=CourseCode+ProfessorName+dateTime;
+return data;
+}
+
 
  function openQRCamera(node) {
   var reader = new FileReader();
@@ -37,6 +47,7 @@ return URLendcoding;
 
   function Verifier(information)
   {
+
       //get current user
       user = firebase.auth().currentUser;
       var today = new Date();
@@ -85,6 +96,5 @@ return URLendcoding;
       }).catch((error)=>{
           console.log("You are not signed up for any courses");
       });
-      
-      
+   
   }
